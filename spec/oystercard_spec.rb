@@ -21,4 +21,16 @@ describe OysterCard do
     expect { subject.top_up(100) }.to raise_error("amount takes balance passed limit: 90")
   end
 
+  it "should be able to touch in" do
+    expect(subject).to respond_to(:touch_in).with(1).argument
+  end
+
+  it "should be able to touch out" do
+    expect(subject).to respond_to(:touch_out)
+  end
+
+  it "should return a boolean when asked if on a journey" do
+    expect(subject.in_journey?).to be_falsey
+  end
+
 end
