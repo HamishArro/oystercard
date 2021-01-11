@@ -30,8 +30,9 @@ describe OysterCard do
     end
 
     it "should deduct minimum fare" do
+      station = double("test station")
       subject.top_up(10)
-      subject.touch_in("station")
+      subject.touch_in(station)
       subject.touch_out
       expect(subject.balance).to eq 9
     end
@@ -41,7 +42,8 @@ describe OysterCard do
   describe " #touch_in" do
 
     it "raises an error if there is insufficient balance when touched in" do
-      expect { subject.touch_in("station") }.to raise_error "insufficient balance"
+      station = double("test station")
+      expect { subject.touch_in(station) }.to raise_error "insufficient balance"
     end
 
     it "should be able to touch in" do
