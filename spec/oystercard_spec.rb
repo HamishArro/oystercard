@@ -33,4 +33,8 @@ describe OysterCard do
     expect(subject.in_journey?).to be_falsey
   end
 
+  it "raises an error if there is insufficient balance when touched in" do
+    expect { subject.touch_in("station") }.to raise_error "insufficient balance"
+  end
+
 end

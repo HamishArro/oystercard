@@ -1,5 +1,7 @@
 class OysterCard
+
   DEFAULT_LIMIT = 90
+  DEFAULT_MIN = 1
   attr_reader :balance
 
   def initialize
@@ -20,6 +22,7 @@ class OysterCard
   end
 
   def touch_in(event)
+    raise "insufficient balance" if @balance < DEFAULT_MIN
     @in_use = true
   end
 
