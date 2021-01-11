@@ -13,12 +13,6 @@ describe OysterCard do
       expect(subject.balance).to eq(10)
     end
 
-    it "should decrease balance by 10" do
-      subject.top_up(10)
-      subject.deduct(10)
-      expect(subject.balance).to eq(0)
-    end
-
     it "should expect error when trying to add more than 90" do
       expect { subject.top_up(100) }.to raise_error("amount takes balance passed limit: 90")
     end
@@ -52,6 +46,13 @@ describe OysterCard do
 
     it "should be able to touch in" do
       expect(subject).to respond_to(:touch_in).with(1).argument
+    end
+
+    it "should remember the entry station after the touch in" do
+      subject.top_up(10)
+      station = double("test station")
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
     end
 
   end
