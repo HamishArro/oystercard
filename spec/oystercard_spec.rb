@@ -23,27 +23,27 @@ describe OysterCard do
     expect(subject.in_journey?).to be_falsey
   end
 
-  describe " #touch_out" do
+  let(:entry_station) {double :station}
+  let(:exit_station) {double :station}
+
+  describe " #touch_out" do  
 
     it "should be able to touch out" do
       expect(subject).to respond_to(:touch_out)
     end
 
     it "should deduct minimum fare" do
-      station = double("test station")
-      subject.top_up(10)
-      subject.touch_in(station)
-      subject.touch_out
-      expect(subject.balance).to eq 9
-    end
-
-    it "should be able to store the journeys made" do
-      entry_station = double("entry station")
-      exit_station = double("exit station")
       subject.top_up(10)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject.journeys[0]).to eq [entry_station => exit_station]
+      expect(subject.balance).to eq 9
+    end
+
+    it "should be able to store the exit station" do
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.exit_station).to eq exit_station
     end
 
   end
@@ -51,8 +51,7 @@ describe OysterCard do
   describe " #touch_in" do
 
     it "raises an error if there is insufficient balance when touched in" do
-      station = double("test station")
-      expect { subject.touch_in(station) }.to raise_error "insufficient balance"
+      expect { subject.touch_in(entry_station) }.to raise_error "insufficient balance"
     end
 
     it "should be able to touch in" do
@@ -61,9 +60,8 @@ describe OysterCard do
 
     it "should remember the entry station after the touch in" do
       subject.top_up(10)
-      station = double("test station")
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
+      subject.touch_in(entry_station)
+      expect(subject.entry_station).to eq entry_station
     end
 
   end
