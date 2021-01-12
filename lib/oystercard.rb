@@ -2,10 +2,12 @@ class OysterCard
 
   DEFAULT_LIMIT = 90
   DEFAULT_MIN = 1
-  attr_reader :balance, :entry_station, :exit_station
+  attr_reader :balance, :entry_station, :exit_station, :journeys
 
   def initialize
     @balance = 0
+    @journeys = Array.new
+    @journey = Hash.new
   end
 
   def in_journey?

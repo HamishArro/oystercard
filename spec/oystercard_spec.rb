@@ -23,10 +23,22 @@ describe OysterCard do
     expect(subject.in_journey?).to be_falsey
   end
 
+  it "should have an empty list of journeys" do
+    expect(subject.journeys).to be_empty
+  end
+
   let(:entry_station) {double :station}
   let(:exit_station) {double :station}
+  let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
 
-  describe " #touch_out" do  
+  it "should store a journey" do
+    subject.top_up(10)
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+    expect(subject.journeys).to include journey
+  end
+
+  describe " #touch_out" do
 
     it "should be able to touch out" do
       expect(subject).to respond_to(:touch_out)
