@@ -37,6 +37,15 @@ describe OysterCard do
       expect(subject.balance).to eq 9
     end
 
+    it "should be able to store the journeys made" do
+      entry_station = double("entry station")
+      exit_station = double("exit station")
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journeys[0]).to eq [entry_station => exit_station]
+    end
+
   end
 
   describe " #touch_in" do
