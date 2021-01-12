@@ -19,10 +19,6 @@ describe OysterCard do
 
   end
 
-  it "should return a boolean when asked if on a journey" do
-    expect(subject.in_journey?).to be_falsey
-  end
-
   it "should have an empty list of journeys" do
     expect(subject.journeys).to be_empty
   end
@@ -51,11 +47,10 @@ describe OysterCard do
       expect(subject.balance).to eq 9
     end
 
-    it "should be able to store the exit station" do
+    it "should deduct £6 if not touched in" do
       subject.top_up(10)
-      subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject.exit_station).to eq exit_station
+      expect(subject.balance).to eq 4
     end
 
   end
@@ -66,14 +61,15 @@ describe OysterCard do
       expect { subject.touch_in(entry_station) }.to raise_error "insufficient balance"
     end
 
-    it "should be able to touch in" do
-      expect(subject).to respond_to(:touch_in).with(1).argument
-    end
-
-    it "should remember the entry station after the touch in" do
+    it "should deduct £6 if not touched out" do
       subject.top_up(10)
       subject.touch_in(entry_station)
-      expect(subject.entry_station).to eq entry_station
+      subject.touch_in(entry_station)
+      expect(subject.balance).to eq 4
+    end
+
+    it "should be able to touch in" do
+      expect(subject).to respond_to(:touch_in).with(1).argument
     end
 
   end

@@ -1,17 +1,13 @@
+require 'journey.rb'
+
 class OysterCard
 
   DEFAULT_LIMIT = 90
-  DEFAULT_MIN = 1
   attr_reader :balance, :entry_station, :exit_station, :journeys
 
   def initialize
     @balance = 0
     @journeys = Array.new
-    @journey = Hash.new
-  end
-
-  def in_journey?
-    !!@entry_station
   end
 
   def top_up(amount)
@@ -20,15 +16,22 @@ class OysterCard
   end
 
   def touch_in(station)
-    raise "insufficient balance" if @balance < DEFAULT_MIN
-    @journey[:entry_station] = (@entry_station = station)
+    raise "insufficient balance" if @balance < Journey::DEFAULT_MIN
+    if @journey == nil
+      @journey = Journey.new
+      @journey.start_journey(station)
+    else
+      deduct(6)
+      @journey = nil 
+      touch_in(station)
+    end
   end
 
   def touch_out(station)
-    deduct(DEFAULT_MIN)
-    @journey[:exit_station] = (@exit_station = station)
-    @journeys << @journey
-    @entry_station = nil
+    @journey = Journey.new if @journey == nil
+    @journey.finish_journey(station)
+    @journeys << @journey.log
+    deduct(@journey.fare)
   end
 
   private
