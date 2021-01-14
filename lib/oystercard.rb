@@ -22,7 +22,7 @@ class OysterCard
       @journey.start_journey(station)
     else
       deduct(6)
-      @journey = nil 
+      @journey = nil
       touch_in(station)
     end
   end
@@ -32,6 +32,7 @@ class OysterCard
     @journey.finish_journey(station)
     @journeys << @journey.log
     deduct(@journey.fare)
+    @journey = nil
   end
 
   private
